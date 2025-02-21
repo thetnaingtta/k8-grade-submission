@@ -10,6 +10,9 @@ spec:
   containers:
   - name: grade-submission-portal
     image: rslim087/kubernetes-course-grade-submission-portal
+    env:
+      - name: GRADE_SUBMISSION_API_URL
+        value: "http://grade-submission-api:3000"
     resources:
       requests:
         memory: "128Mi"
@@ -18,13 +21,3 @@ spec:
         memory: "128Mi"                
     ports:
       - containerPort: 5001
-  - name: grade-submission-portal-health-checker
-    image: rslim087/kubernetes-course-grade-submission-portal-health-checker
-    resources:
-      requests:
-        memory: "64Mi"
-        cpu: "100m"
-      limits:
-        memory: "64Mi"
-    ports:
-      - containerPort: 5002
