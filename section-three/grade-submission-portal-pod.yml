@@ -4,7 +4,7 @@ metadata:
   name: grade-submission-portal
   namespace: grade-submission
   labels:
-    "app.kubernetes.io/name": grade-submission
+    app.kubernetes.io/name: grade-submission
     app.kubernetes.io/component: frontend
     app.kubernetes.io/instance: grade-submission-portal
 spec:
