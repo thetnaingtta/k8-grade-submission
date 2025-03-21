@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.microservice.name }}
+  namespace: {{ .Values.microservice.namespace }}
+spec:
+  replicas: {{ .Values.microservice.replicas }}
+  selector:
+  
+    matchLabels:
+      app.kubernetes.io/instance: 
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1 ## ensure that we do not have more than 3 pod replicas running at any given time
+      maxUnavailable: 50%
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: grade-submission
+        app.kubernetes.io/component: backend
+        app.kubernetes.io/instance: grade-submission-api
+    spec:
+      containers:
+        - name: grade-submission-api
+          image: rslim087/kubernetes-course-grade-submission-api:stateless-v2
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 3000
+            periodSeconds: 5
+          env:
+            - name: MONGODB_HOST
+              value: mongodb
+            - name: MONGODB_PORT
+              value: "27017"
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "128m"
+            limits:
+              memory: "128Mi"
+          ports:
+            - containerPort: 3000  
