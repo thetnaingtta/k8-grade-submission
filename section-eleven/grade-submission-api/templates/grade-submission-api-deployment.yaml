@@ -6,9 +6,8 @@ metadata:
 spec:
   replicas: {{ .Values.microservice.replicas }}
   selector:
-  
     matchLabels:
-      app.kubernetes.io/instance: 
+      app.kubernetes.io/instance: {{ .Values.microservice.name }}
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -19,11 +18,11 @@ spec:
       labels:
         app.kubernetes.io/name: grade-submission
         app.kubernetes.io/component: backend
-        app.kubernetes.io/instance: grade-submission-api
+        app.kubernetes.io/instance: {{ .Values.microservice.name }}
     spec:
       containers:
-        - name: grade-submission-api
-          image: rslim087/kubernetes-course-grade-submission-api:stateless-v2
+        - name: {{ .Values.microservice.name }}
+          image: rslim087/kubernetes-course-grade-submission-api:stateless-v3
           livenessProbe:
             httpGet:
               path: /healthz
@@ -35,11 +34,11 @@ spec:
               path: /readyz
               port: 3000
             periodSeconds: 5
-          env:
-            - name: MONGODB_HOST
-              value: mongodb
-            - name: MONGODB_PORT
-              value: "27017"
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.microservice.name }}-config
+            - secretRef:
+                name: {{ .Values.microservice.name }}-secret
           resources:
             requests:
               memory: "128Mi"

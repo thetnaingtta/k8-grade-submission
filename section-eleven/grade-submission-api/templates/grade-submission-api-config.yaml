@@ -5,4 +5,4 @@ metadata:
   namespace: {{ .Values.microservice.namespace }}
 data:
   MONGODB_HOST: mongodb
-  MONGODB_PORT: "27017"
+  MONGODB_PORT: '27017'

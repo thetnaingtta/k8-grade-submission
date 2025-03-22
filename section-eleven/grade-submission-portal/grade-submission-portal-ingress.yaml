@@ -4,6 +4,7 @@ metadata:
   name: grade-submission-portal-ingress
   namespace: grade-submission
 spec:
+  ingressClassName: nginx
   rules:
     - http:
         paths:

@@ -29,9 +29,9 @@ spec:
               path: /readyz
               port: 5001
             periodSeconds: 5
-          env:
-            - name: GRADE_SERVICE_HOST
-              value: grade-submission-api
+          envFrom:
+            - configMapRef:
+                name: grade-submission-portal-config            
           resources:
             requests:
               memory: "128Mi"

@@ -19,6 +19,9 @@ spec:
       containers:
         - name: mongodb
           image: mongo:4.4
+          envFrom:
+            - secretRef:
+                name: mongodb-secret
           resources:
             requests:
               memory: "128Mi"

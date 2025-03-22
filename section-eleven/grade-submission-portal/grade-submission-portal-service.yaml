@@ -4,10 +4,9 @@ metadata:
   name: grade-submission-portal
   namespace: grade-submission
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app.kubernetes.io/instance: grade-submission-portal
   ports:
     - port: 5001
       targetPort: 5001
-      nodePort: 32000
