@@ -11,7 +11,7 @@ spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: 1 ## ensure that we do not have more than 3 pod replicas running at any given time
+      maxSurge: 1
       maxUnavailable: 50%
   template:
     metadata:
@@ -22,17 +22,17 @@ spec:
     spec:
       containers:
         - name: {{ .Values.microservice.name }}
-          image: rslim087/kubernetes-course-grade-submission-api:stateless-v3
+          image: {{ .Values.workload.image }}
           livenessProbe:
             httpGet:
               path: /healthz
-              port: 3000
-            initialDelaySeconds: 15
+              port: {{ .Values.workload.port }}
+            initialDelaySeconds: {{ .Values.workload.livenessDelay }}
             periodSeconds: 5
           readinessProbe:
             httpGet:
               path: /readyz
-              port: 3000
+              port: {{ .Values.workload.port }}
             periodSeconds: 5
           envFrom:
             - configMapRef:
@@ -41,9 +41,9 @@ spec:
                 name: {{ .Values.microservice.name }}-secret
           resources:
             requests:
-              memory: "128Mi"
-              cpu: "128m"
+              memory: {{ .Values.workload.resources.memory }}
+              cpu: {{ .Values.workload.resources.cpu }}
             limits:
-              memory: "128Mi"
+              memory: {{ .Values.workload.resources.memory }}
           ports:
-            - containerPort: 3000  
+            - containerPort: {{ .Values.workload.port }}
