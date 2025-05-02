@@ -1,0 +1,9 @@
+useStatefulSet: true
+auth:
+  enabled: false
+
+# you can use the following to set up a diff persistent volume claim rather than default from bitnami
+# persistence:
+#   mountPath: /data/db
+# mongodb:
+#   dbPath: /data/db 

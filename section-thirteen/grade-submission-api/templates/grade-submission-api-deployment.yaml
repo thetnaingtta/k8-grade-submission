@@ -35,6 +35,8 @@ spec:
               port: {{ .Values.workload.port }}
             periodSeconds: 5
           envFrom:
+            - configMapRef:
+                name: {{ .Values.microservice.name }}-config
             - secretRef:
                 name: {{ .Values.microservice.name }}-secret
           resources:
